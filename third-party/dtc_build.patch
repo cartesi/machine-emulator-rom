@@ -1,0 +1,11 @@
+--- Makefile	2018-07-23 03:00:50.000000000 +0000
++++ Makefile.new	2019-07-03 14:03:09.000000000 +0000
+@@ -18,7 +18,7 @@
+ CPPFLAGS = -I libfdt -I .
+ WARNINGS = -Wall -Wpointer-arith -Wcast-qual -Wnested-externs \
+ 	-Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls -Wshadow
+-CFLAGS = -g -Os $(SHAREDLIB_CFLAGS) -Werror $(WARNINGS)
++CFLAGS = -g -Os $(SHAREDLIB_CFLAGS) -Werror $(WARNINGS) -fno-stack-protector
+ 
+ BISON = bison
+ LEX = flex
