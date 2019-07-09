@@ -3,11 +3,6 @@ UNAME:=$(shell uname)
 EMULATOR_INC =
 EMULATOR_DEP =
 
-ifeq ($(EMULATOR_INC),)
-EMULATOR_DEP = $(DEPDIR)/machine-emulator
-EMULATOR_INC = $(abspath $(EMULATOR_DEP)/src)
-endif
-
 DEPDIR := third-party
 SRCDIR := $(abspath src)
 BUILDDIR = $(abspath build)
@@ -16,10 +11,15 @@ SRCCLEAN := $(addsuffix .clean,$(SRCDIR))
 DEPDIRS := $(addprefix $(DEPDIR)/,dtc-1.4.7)
 DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
 
-RVCC  = riscv64-linux-gnu-gcc-8
-RVCXX = riscv64-linux-gnu-g++-8
-RVCOPY = riscv64-linux-gnu-objcopy
-RVDUMP = riscv64-linux-gnu-objdump
+ifeq ($(EMULATOR_INC),)
+EMULATOR_DEP = $(DEPDIR)/machine-emulator
+EMULATOR_INC = $(abspath $(EMULATOR_DEP)/src)
+endif
+
+RVCC  = riscv64-unknown-linux-gnu-gcc
+RVCXX = riscv64-unknown-linux-gnu-g++
+RVCOPY = riscv64-unknown-linux-gnu-objcopy
+RVDUMP = riscv64-unknown-linux-gnu-objdump
 
 all: $(SRCDIR)
 
@@ -58,6 +58,6 @@ $(SRCCLEAN) $(DEPCLEAN): %.clean:
 	$(MAKE) -C $* clean
 
 toolchain-env:
-	docker run --name toolchain-env --hostname toolchain-env -it --rm -v `pwd`:/opt/cartesi/machine-emulator-rom -w /opt/cartesi/machine-emulator-rom cartesi/toolchain-env:v1
+	docker run --hostname toolchain-env -it --rm -v `pwd`:/opt/cartesi/machine-emulator-rom -w /opt/cartesi/machine-emulator-rom cartesi/toolchain-env:v1
 
 .PHONY: all clean distclean downloads $(SRCDIR) $(DEPDIRS) $(SRCCLEAN) $(DEPCLEAN)

@@ -1,6 +1,6 @@
-RVCC  = riscv64-linux-gnu-gcc-8
-RVCOPY = riscv64-linux-gnu-objcopy
-RVDUMP = riscv64-linux-gnu-objdump
+RVCC  = riscv64-unknown-linux-gnu-gcc
+RVCOPY = riscv64-unknown-linux-gnu-objcopy
+RVDUMP = riscv64-unknown-linux-gnu-objdump
 CFLAGS=-static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles
 
 rom.bin: rom
