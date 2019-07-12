@@ -58,6 +58,13 @@ $(SRCCLEAN) $(DEPCLEAN): %.clean:
 	$(MAKE) -C $* clean
 
 toolchain-env:
-	docker run --hostname toolchain-env -it --rm -v `pwd`:/opt/cartesi/machine-emulator-rom -w /opt/cartesi/machine-emulator-rom cartesi/toolchain-env:v1
+	@docker run --hostname toolchain-env -it --rm \
+		-e USER=$$(id -u -n) \
+		-e GROUP=$$(id -g -n) \
+		-e UID=$$(id -u) \
+		-e GID=$$(id -g) \
+		-v `pwd`:/opt/cartesi/machine-emulator-rom \
+		-w /opt/cartesi/machine-emulator-rom \
+		cartesi/toolchain-env:v1
 
 .PHONY: all clean distclean downloads $(SRCDIR) $(DEPDIRS) $(SRCCLEAN) $(DEPCLEAN)
