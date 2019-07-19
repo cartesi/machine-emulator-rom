@@ -11,6 +11,8 @@ SRCCLEAN := $(addsuffix .clean,$(SRCDIR))
 DEPDIRS := $(addprefix $(DEPDIR)/,dtc-1.4.7)
 DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
 
+TOOLCHAIN_TAG ?= devel
+
 ifeq ($(EMULATOR_INC),)
 EMULATOR_DEP = $(DEPDIR)/machine-emulator
 EMULATOR_INC = $(abspath $(EMULATOR_DEP)/src)
@@ -65,6 +67,6 @@ toolchain-env:
 		-e GID=$$(id -g) \
 		-v `pwd`:/opt/cartesi/machine-emulator-rom \
 		-w /opt/cartesi/machine-emulator-rom \
-		cartesi/toolchain-env:v1
+		cartesi/image-toolchain:$(TOOLCHAIN_TAG)
 
 .PHONY: all clean distclean downloads $(SRCDIR) $(DEPDIRS) $(SRCCLEAN) $(DEPCLEAN)
