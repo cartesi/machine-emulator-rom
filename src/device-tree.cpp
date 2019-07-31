@@ -84,7 +84,7 @@ int build_device_tree(struct pma *pma, struct pma_ext_hdr *pma_ext,
        FDT_CHECK(fdt_property_string(buf, "status", "okay"));
        FDT_CHECK(fdt_property_string(buf, "compatible", "riscv"));
        FDT_CHECK(fdt_property_string(buf, "riscv,isa", isa_string));
-       FDT_CHECK(fdt_property_string(buf, "mmu-type", "riscv,sv48"));
+       FDT_CHECK(fdt_property_string(buf, "mmu-type", "riscv,sv39"));
        FDT_CHECK(fdt_property_u32(buf, "clock-frequency", CLOCK_FREQ));
        FDT_CHECK(fdt_begin_node(buf, "interrupt-controller"));
         FDT_CHECK(fdt_property_u32(buf, "#interrupt-cells", 1));
