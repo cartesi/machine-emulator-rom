@@ -1,0 +1,5 @@
+*.o
+*.d
+build
+third-party/downloads
+third-party/dtc-1.4.7

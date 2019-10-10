@@ -59,7 +59,7 @@ $(DEPDIR)/dtc-1.4.7:
 	$(MAKE) -C $@ PREFIX=$(BUILDDIR) install-includes
 	cp $@/libfdt/libfdt.a $(BUILDDIR)/lib
 
-downloads: $(EMULATOR_DEP)
+downloads:
 	mkdir -p $(DOWNLOADDIR)
 	wget -nc -i $(DEPDIR)/dependencies -P $(DOWNLOADDIR)
 	cd $(DEPDIR) && shasum -c shasumfile
