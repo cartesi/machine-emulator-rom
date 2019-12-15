@@ -3,3 +3,4 @@
 build
 third-party/downloads
 third-party/dtc-1.4.7
+third-party/machine-emulator-defines

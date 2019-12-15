@@ -11,9 +11,8 @@
 // the License.
 //
 
-#include <pma-constants.h>
-#include <pma-ext.h>
-#include <rtc.h>
+#include <pma-defines.h>
+#include <rtc-defines.h>
 
 extern "C" {
 #include <libfdt.h>
@@ -32,7 +31,10 @@ extern "C" {
 #define PMA_VALUE(x) ((x >> 12) << 12)
 #define PMA_DID(x) ((x << 52) >> 60)
 
-using namespace cartesi;
+struct pma {
+    uint64_t istart;
+    uint64_t ilength;
+};
 
 static int fdt_begin_node_num(void *fdt, const char *name, uint64_t num) {
     char name_num[256];
@@ -71,7 +73,7 @@ static void parse_misa(char *str, uint64_t misa)
 }
 
 
-int build_device_tree(struct pma *pma, struct pma_ext_hdr *pma_ext,
+int build_device_tree(struct pma *pma, const char *bootargs,
         uint64_t misa, void *buf, uint64_t buflen)
 {
     int cur_phandle = 1;
@@ -90,7 +92,7 @@ int build_device_tree(struct pma *pma, struct pma_ext_hdr *pma_ext,
      FDT_CHECK(fdt_begin_node(buf, "cpus"));
       FDT_CHECK(fdt_property_u32(buf, "#address-cells", 1));
       FDT_CHECK(fdt_property_u32(buf, "#size-cells", 0));
-      FDT_CHECK(fdt_property_u32(buf, "timebase-frequency", CLOCK_FREQ/RTC_FREQ_DIV));
+      FDT_CHECK(fdt_property_u32(buf, "timebase-frequency", CLOCK_FREQ/RTC_FREQ_DIV_DEF));
       FDT_CHECK(fdt_begin_node_num(buf, "cpu", 0));
        FDT_CHECK(fdt_property_string(buf, "device_type", "cpu"));
        FDT_CHECK(fdt_property_u32(buf, "reg", 0));
@@ -121,10 +123,10 @@ int build_device_tree(struct pma *pma, struct pma_ext_hdr *pma_ext,
     uint64_t length = UINT64_MAX;
     int ret, j = 0;
     char mtd_name[64] = "flash.";
-    for (int i = 0; i < PMA_MAX; i++) {
+    for (int i = 0; i < PMA_MAX_DEF; i++) {
         pma_entry = &pma[i];
 
-        if (PMA_DID(pma_entry->istart) != static_cast<uint64_t>(PMA_ISTART_DID::drive))
+        if (PMA_DID(pma_entry->istart) != PMA_DRIVE_DID_DEF)
             continue;
 
         start = PMA_VALUE(pma_entry->istart);
@@ -152,7 +154,7 @@ int build_device_tree(struct pma *pma, struct pma_ext_hdr *pma_ext,
       FDT_CHECK(fdt_property(buf, "compatible", comp, sizeof(comp)));
       FDT_CHECK(fdt_property(buf, "ranges", NULL, 0));
 
-      FDT_CHECK(fdt_begin_node_num(buf, "clint", PMA_CLINT_START));
+      FDT_CHECK(fdt_begin_node_num(buf, "clint", PMA_CLINT_START_DEF));
        FDT_CHECK(fdt_property_string(buf, "compatible", "riscv,clint0"));
        uint32_t clint[] = {
            cpu_to_fdt32(intc_phandle),
@@ -161,12 +163,12 @@ int build_device_tree(struct pma *pma, struct pma_ext_hdr *pma_ext,
            cpu_to_fdt32(7) /* M timer irq */
        };
        FDT_CHECK(fdt_property(buf, "interrupts-extended", clint, sizeof(clint)));
-       FDT_CHECK(fdt_property_u64_u64(buf, "reg", PMA_CLINT_START, PMA_CLINT_LENGTH));
+       FDT_CHECK(fdt_property_u64_u64(buf, "reg", PMA_CLINT_START_DEF, PMA_CLINT_LENGTH_DEF));
       FDT_CHECK(fdt_end_node(buf)); /* clint */
 
-      FDT_CHECK(fdt_begin_node_num(buf, "htif", PMA_HTIF_START));
+      FDT_CHECK(fdt_begin_node_num(buf, "htif", PMA_HTIF_START_DEF));
        FDT_CHECK(fdt_property_string(buf, "compatible", "ucb,htif0"));
-       FDT_CHECK(fdt_property_u64_u64(buf, "reg", PMA_HTIF_START, PMA_HTIF_LENGTH));
+       FDT_CHECK(fdt_property_u64_u64(buf, "reg", PMA_HTIF_START_DEF, PMA_HTIF_LENGTH_DEF));
        uint32_t htif[] = {
            cpu_to_fdt32(intc_phandle),
            cpu_to_fdt32(13) // X HOST
@@ -177,7 +179,7 @@ int build_device_tree(struct pma *pma, struct pma_ext_hdr *pma_ext,
      FDT_CHECK(fdt_end_node(buf)); /* soc */
 
      FDT_CHECK(fdt_begin_node(buf, "chosen"));
-      FDT_CHECK(fdt_property_string(buf, "bootargs", pma_ext->bootargs));
+      FDT_CHECK(fdt_property_string(buf, "bootargs", bootargs));
      FDT_CHECK(fdt_end_node(buf));
 
     FDT_CHECK(fdt_end_node(buf)); /* root */

@@ -27,8 +27,8 @@ DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
 TOOLCHAIN_TAG ?= devel
 
 ifeq ($(EMULATOR_INC),)
-EMULATOR_DEP = $(DEPDIR)/machine-emulator
-EMULATOR_INC = $(abspath $(EMULATOR_DEP)/src)
+EMULATOR_DEP = $(DEPDIR)/machine-emulator-defines
+EMULATOR_INC = $(abspath $(EMULATOR_DEP))
 endif
 
 RVCC  = riscv64-unknown-linux-gnu-gcc
@@ -49,8 +49,8 @@ distclean: clean
 $(BUILDDIR):
 	mkdir -p $(BUILDDIR)/lib
 
-$(DEPDIR)/machine-emulator:
-	if [ ! -d $@ ]; then git clone --branch master --depth 1 git@github.com:cartesi/machine-emulator.git $@; fi
+$(DEPDIR)/machine-emulator-defines:
+	if [ ! -d $@ ]; then git clone --branch master --depth 1 git@github.com:cartesi-corp/machine-emulator-defines.git $@; fi
 
 $(DEPDIR)/dtc-1.4.7:
 	tar -xzf $(DOWNLOADDIR)/v1.4.7.tar.gz -C $(DEPDIR)
@@ -59,7 +59,7 @@ $(DEPDIR)/dtc-1.4.7:
 	$(MAKE) -C $@ PREFIX=$(BUILDDIR) install-includes
 	cp $@/libfdt/libfdt.a $(BUILDDIR)/lib
 
-downloads:
+downloads: $(EMULATOR_DEP)
 	mkdir -p $(DOWNLOADDIR)
 	wget -nc -i $(DEPDIR)/dependencies -P $(DOWNLOADDIR)
 	cd $(DEPDIR) && shasum -c shasumfile
@@ -80,6 +80,6 @@ toolchain-env:
 		-e GID=$$(id -g) \
 		-v `pwd`:/opt/cartesi/machine-emulator-rom \
 		-w /opt/cartesi/machine-emulator-rom \
-		cartesi/image-toolchain:$(TOOLCHAIN_TAG)
+		cartesi/toolchain:$(TOOLCHAIN_TAG)
 
 .PHONY: all clean distclean downloads $(SRCDIR) $(DEPDIRS) $(SRCCLEAN) $(DEPCLEAN)

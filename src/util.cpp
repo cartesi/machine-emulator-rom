@@ -13,8 +13,6 @@
 
 #include <string.h>
 
-#include <pma-defines.h>
-
 #include "util.h"
 
 volatile extern uint64_t tohost;
