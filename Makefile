@@ -27,8 +27,8 @@ DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
 TOOLCHAIN_TAG ?= devel
 
 ifeq ($(EMULATOR_INC),)
-EMULATOR_DEP = $(DEPDIR)/machine-emulator-defines
-EMULATOR_INC = $(abspath $(EMULATOR_DEP))
+EMULATOR_DEP = lib/machine-emulator-defines/pma-defines.h
+EMULATOR_INC = $(abspath $(dir $(EMULATOR_DEP)))
 endif
 
 RVCC  = riscv64-unknown-linux-gnu-gcc
@@ -44,20 +44,20 @@ depclean: $(DEPCLEAN) clean
 	rm -rf $(BUILDDIR)
 
 distclean: clean
-	rm -rf $(BUILDDIR) $(DOWNLOADDIR) $(DEPDIRS) $(EMULATOR_DEP)
+	rm -rf $(BUILDDIR) $(DOWNLOADDIR) $(DEPDIRS)
 
 $(BUILDDIR):
 	mkdir -p $(BUILDDIR)/lib
 
-$(DEPDIR)/machine-emulator-defines:
-	if [ ! -d $@ ]; then git clone --branch master --depth 1 git@github.com:cartesi-corp/machine-emulator-defines.git $@; fi
+lib/machine-emulator-defines/pma-defines.h:
+	git submodule update --init --recursive
 
 $(DEPDIR)/dtc-1.4.7:
 	tar -xzf $(DOWNLOADDIR)/v1.4.7.tar.gz -C $(DEPDIR)
 	cd $@ && patch -p0 < ../dtc_build.patch
 	$(MAKE) -C $@ CC=$(RVCC) libfdt/libfdt.a
 	$(MAKE) -C $@ PREFIX=$(BUILDDIR) install-includes
-	cp $@/libfdt/libfdt.a $(BUILDDIR)/lib
+	cp $@/libfdt/libfdt.a $(BUILDDIR)/lib/
 
 downloads: $(EMULATOR_DEP)
 	mkdir -p $(DOWNLOADDIR)
