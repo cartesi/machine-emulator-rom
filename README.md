@@ -11,7 +11,7 @@ The Cartesi Machine Emulator ROM is the reference software that boots a guest Op
 - RISCV64 C/C++ Compiler with support for C++17 (tested with GCC >= 8+).
 - GNU Make >= 3.81
 - Libfdt 1.4.7
-- Docker image cartesi/toolchain-env:v1
+- Docker image `cartesi/toolchain`
 
 ### Build
 
@@ -36,9 +36,9 @@ The file `build/rom.bin` is the compiled ROM code that can be used with the emul
 
 ## Contributing
 
-Thank you for your interest in Cartesi! Head over to our [Contributing Guidelines](https://github.com/cartesi/machine-emulator-rom/blob/master/CONTRIBUTING.md) for instructions on how to sign our Contributors Agreement and get started with Cartesi!
+Thank you for your interest in Cartesi! Head over to our [Contributing Guidelines](CONTRIBUTING.md) for instructions on how to sign our Contributors Agreement and get started with Cartesi!
 
-Please note we have a [Code of Conduct](https://github.com/cartesi/machine-emulator-rom/blob/master/CODE_OF_CONDUCT.md), please follow it in all your interactions with the project.
+Please note we have a [Code of Conduct](CODE_OF_CONDUCT.md), please follow it in all your interactions with the project.
 
 ## Authors
 
@@ -48,4 +48,4 @@ Please note we have a [Code of Conduct](https://github.com/cartesi/machine-emula
 ## License
 
 The machine-emulator-rom repository and all contributions are licensed under
-[APACHE 2.0](https://www.apache.org/licenses/LICENSE-2.0). Please review our [LICENSE](https://github.com/cartesi/machine-emulator-rom/blob/master/LICENSE) file.
+[APACHE 2.0](https://www.apache.org/licenses/LICENSE-2.0). Please review our [LICENSE](LICENSE) file.
