@@ -121,30 +121,39 @@ int build_device_tree(struct pma *pma, const char *bootargs,
     struct pma *pma_entry = NULL;
     uint64_t start = UINT64_MAX;
     uint64_t length = UINT64_MAX;
+    uint8_t pma_did;
     int ret, j = 0;
     char mtd_name[64] = "flash.";
     for (int i = 0; i < PMA_MAX_DEF; i++) {
         pma_entry = &pma[i];
+        pma_did = PMA_DID(pma_entry->istart);
 
-        if (PMA_DID(pma_entry->istart) != PMA_DRIVE_DID_DEF)
-            continue;
+        if (pma_did == PMA_DRIVE_DID_DEF) {
+            start = PMA_VALUE(pma_entry->istart);
+            length = PMA_VALUE(pma_entry->ilength);
 
-        start = PMA_VALUE(pma_entry->istart);
-        length = PMA_VALUE(pma_entry->ilength);
+            if ((ret = ulltoa(&mtd_name[6], j, 10)) < 0)
+                return ret;
 
-        if ((ret = ulltoa(&mtd_name[6], j, 10)) < 0)
-            return ret;
+            FDT_CHECK(fdt_begin_node_num(buf, "flash", start));
+             FDT_CHECK(fdt_property_u32(buf, "#address-cells", 2));
+             FDT_CHECK(fdt_property_u32(buf, "#size-cells", 2));
+             FDT_CHECK(fdt_property_string(buf, "compatible", "mtd-ram"));
+             FDT_CHECK(fdt_property_u32(buf, "bank-width", 4));
+             FDT_CHECK(fdt_property_u64_u64(buf, "reg", start, length));
+             FDT_CHECK(fdt_property_string(buf, "linux,mtd-name", mtd_name));
+            FDT_CHECK(fdt_end_node(buf)); /* flash */
 
-        FDT_CHECK(fdt_begin_node_num(buf, "flash", start));
-         FDT_CHECK(fdt_property_u32(buf, "#address-cells", 2));
-         FDT_CHECK(fdt_property_u32(buf, "#size-cells", 2));
-         FDT_CHECK(fdt_property_string(buf, "compatible", "mtd-ram"));
-         FDT_CHECK(fdt_property_u32(buf, "bank-width", 4));
-         FDT_CHECK(fdt_property_u64_u64(buf, "reg", start, length));
-         FDT_CHECK(fdt_property_string(buf, "linux,mtd-name", mtd_name));
-        FDT_CHECK(fdt_end_node(buf)); /* flash */
+            j++;
+        } else if (pma_did == PMA_DHD_DID_DEF) {
+            start = PMA_VALUE(pma_entry->istart);
+            length = PMA_VALUE(pma_entry->ilength);
 
-        j++;
+            FDT_CHECK(fdt_begin_node_num(buf, "dehash", start));
+             FDT_CHECK(fdt_property_string(buf, "compatible", "ctsi-dhd"));
+             FDT_CHECK(fdt_property_u64_u64(buf, "reg", start, length));
+            FDT_CHECK(fdt_end_node(buf)); /* dehash */
+        }
      }
 
      FDT_CHECK(fdt_begin_node(buf, "soc"));
