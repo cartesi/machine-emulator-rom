@@ -18,10 +18,10 @@ ifneq ($(EMULATOR_INC),)
 EMULATOR_FLAGS= -I$(EMULATOR_INC)
 endif
 
-CC = riscv64-unknown-linux-gnu-gcc
-CXX = riscv64-unknown-linux-gnu-g++
-OBJCOPY=riscv64-unknown-linux-gnu-objcopy
-OBJDUMP=riscv64-unknown-linux-gnu-objdump
+CC = riscv64-cartesi-linux-gnu-gcc
+CXX = riscv64-cartesi-linux-gnu-g++
+OBJCOPY=riscv64-cartesi-linux-gnu-objcopy
+OBJDUMP=riscv64-cartesi-linux-gnu-objdump
 CFLAGS=-static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
 CXXFLAGS=-static -fno-exceptions -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
 

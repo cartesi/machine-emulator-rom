@@ -24,17 +24,17 @@ SRCCLEAN := $(addsuffix .clean,$(SRCDIR))
 DEPDIRS := $(addprefix $(DEPDIR)/,dtc-1.4.7)
 DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
 
-TOOLCHAIN_TAG ?= 0.4.0
+TOOLCHAIN_TAG ?= 0.5.0
 
 ifeq ($(EMULATOR_INC),)
 EMULATOR_DEP = lib/machine-emulator-defines/pma-defines.h
 EMULATOR_INC = $(abspath $(dir $(EMULATOR_DEP)))
 endif
 
-RVCC  = riscv64-unknown-linux-gnu-gcc
-RVCXX = riscv64-unknown-linux-gnu-g++
-RVCOPY = riscv64-unknown-linux-gnu-objcopy
-RVDUMP = riscv64-unknown-linux-gnu-objdump
+RVCC  = riscv64-cartesi-linux-gnu-gcc
+RVCXX = riscv64-cartesi-linux-gnu-g++
+RVCOPY = riscv64-cartesi-linux-gnu-objcopy
+RVDUMP = riscv64-cartesi-linux-gnu-objdump
 
 all: $(SRCDIR)
 

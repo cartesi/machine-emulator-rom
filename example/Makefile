@@ -11,9 +11,9 @@
 # the License.
 #
 
-RVCC  = riscv64-unknown-linux-gnu-gcc
-RVCOPY = riscv64-unknown-linux-gnu-objcopy
-RVDUMP = riscv64-unknown-linux-gnu-objdump
+RVCC  = riscv64-cartesi-linux-gnu-gcc
+RVCOPY = riscv64-cartesi-linux-gnu-objcopy
+RVDUMP = riscv64-cartesi-linux-gnu-objdump
 CFLAGS=-static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles
 
 rom.bin: rom
