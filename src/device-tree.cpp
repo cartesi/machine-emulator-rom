@@ -31,6 +31,8 @@ extern "C" {
 #define PMA_VALUE(x) ((x >> 12) << 12)
 #define PMA_DID(x) ((x << 52) >> 60)
 
+#define MISA_BIT(x) (1 << ((x) - 'A'))
+
 struct pma {
     uint64_t istart;
     uint64_t ilength;
@@ -64,6 +66,10 @@ static void parse_misa(char *str, uint64_t misa)
     static char prefix[] = "rv64";
     for (int j = 0; j < sizeof(prefix) - 1; j++)
         *str++ = prefix[j];
+
+    #ifdef RISCV_SUPPORT_FD_EMULATION
+    misa |= MISA_BIT('F') | MISA_BIT('D');
+    #endif
 
     for(int i = 0; i < 26; i++) {
         if (misa & (1 << i))
