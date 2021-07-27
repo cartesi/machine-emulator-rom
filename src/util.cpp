@@ -44,9 +44,9 @@ int ulltoa(char *str, unsigned long long value, int base)
 
 void do_tohost(uint64_t tohost_value)
 {
-	while (tohost)
-		fromhost = 0;
+	fromhost = 0;
 	tohost = tohost_value;
+	(void) fromhost;
 }
 
 void cputchar(int x)
