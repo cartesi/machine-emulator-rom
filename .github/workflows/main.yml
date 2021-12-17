@@ -63,7 +63,8 @@ jobs:
         run: mv build/rom.bin build/rom-fd-emulation.bin
 
       - uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: false
+        #        if: startsWith(github.ref, 'refs/tags/v')
         with:
           prerelease: true
           files: build/rom-fd-emulation.bin
