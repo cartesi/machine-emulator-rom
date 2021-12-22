@@ -38,6 +38,44 @@ struct pma {
     uint64_t ilength;
 };
 
+struct htif {
+    uint64_t tohost;
+    uint64_t fromhost;
+    uint64_t ihalt;
+    uint64_t iconsole;
+    uint64_t iyield;
+};
+
+static int fdt_yield(void *buf, uint64_t buflen)
+{
+    struct htif *htif = (struct htif *)PMA_HTIF_START_DEF;
+    struct {
+        const char *name;
+        const int offset;
+    } bits[] = {
+        {"automatic", 0},
+        {"manual",    1},
+    };
+
+    uint64_t any = 0;
+    for (int i=0; i<sizeof(bits) / sizeof(*bits); ++i)
+        any |= htif->iyield & (1ul << bits[i].offset);
+
+    if (any) {
+        FDT_CHECK(fdt_begin_node(buf, "yield"));
+        FDT_CHECK(fdt_property_string(buf, "compatible", "ctsi-yield"));
+        for (int i=0; i<sizeof(bits) / sizeof(*bits); ++i) {
+            uint64_t enabled = htif->iyield & (1ul << bits[i].offset);
+            if (enabled) {
+                fdt_property(buf, bits[i].name, NULL, 0);
+            }
+        }
+        FDT_CHECK(fdt_end_node(buf));
+    }
+
+    return 0;
+}
+
 static int fdt_begin_node_num(void *fdt, const char *name, uint64_t num) {
     char name_num[256];
     int ret, len  = strnlen(name, sizeof(name_num) - 18);// hex rep + @ + \0
@@ -205,6 +243,8 @@ int build_device_tree(struct pma *pma, const char *bootargs,
          FDT_CHECK(fdt_end_node(buf)); /* rollup notice hashes */
         FDT_CHECK(fdt_end_node(buf)); /* rollup */
     }
+
+    fdt_yield(buf, buflen);
 
      FDT_CHECK(fdt_begin_node(buf, "soc"));
       FDT_CHECK(fdt_property_u32(buf, "#address-cells", 2));
