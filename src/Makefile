@@ -22,8 +22,8 @@ CC = riscv64-cartesi-linux-gnu-gcc
 CXX = riscv64-cartesi-linux-gnu-g++
 OBJCOPY=riscv64-cartesi-linux-gnu-objcopy
 OBJDUMP=riscv64-cartesi-linux-gnu-objdump
-CFLAGS=-static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
-CXXFLAGS=-static -fno-exceptions -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
+CFLAGS=-static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -DCTSI_VERSION='"$(CTSI_VERSION)"' -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
+CXXFLAGS=-static -fno-exceptions -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -DCTSI_VERSION='"$(CTSI_VERSION)"' -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
 
 ifeq ($(fd_emulation),yes)
 CFLAGS += -DRISCV_SUPPORT_FD_EMULATION

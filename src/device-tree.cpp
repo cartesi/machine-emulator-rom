@@ -161,6 +161,10 @@ int build_device_tree(struct pma *pma, const char *bootargs,
                   PMA_VALUE(pma->ilength) - DEVICE_TREE_MAX_SIZE));
      FDT_CHECK(fdt_end_node(buf)); /* memory */
 
+     FDT_CHECK(fdt_begin_node(buf, "rom"));
+      FDT_CHECK(fdt_property_string(buf, "version", CTSI_VERSION));
+     FDT_CHECK(fdt_end_node(buf)); /* rom */
+
     /* flash */
     struct pma *pma_entry = NULL;
     uint64_t start = UINT64_MAX;
