@@ -36,7 +36,7 @@ _start:
 	csrw mtvec, t0;
 
 	// Calls ROM initialization.
-	li a0, PMA_START_DEF;
+	li a0, PMA_SHADOW_PMAS_START_DEF;
 	li a1, PMA_ROM_EXTRASPACE_START_DEF;
 	ld t0, 0(a0);   // RAM start addr
 	ld t1, 8(a0);   // RAM length
