@@ -25,7 +25,7 @@ OBJDUMP=riscv64-cartesi-linux-gnu-objdump
 CFLAGS=-static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -DCTSI_VERSION='"$(CTSI_VERSION)"' -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
 CXXFLAGS=-static -fno-exceptions -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -DCTSI_VERSION='"$(CTSI_VERSION)"' -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
 
-TARGET_EXEC ?= rom
+TARGET_EXEC ?= rom-$(CTSI_VERSION)
 FINAL_EXEC ?= $(TARGET_EXEC).bin
 
 SRCS := $(shell find $(SRC_DIR) -name  "*.cpp" -or -name "*.c" -or -name "*.S")

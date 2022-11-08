@@ -68,7 +68,7 @@ downloads: $(EMULATOR_DEP)
 dep: $(BUILDDIR) $(DEPDIRS)
 
 $(SRCDIR):
-	$(MAKE) -C $@ CC=$(RVCC) CXX=$(RVCXX) OBJCOPY=$(RVCOPY) OBJDUMP=$(RVDUMP) EMULATOR_INC=$(EMULATOR_INC) CTSI_VERSION=$(shell git describe --long --dirty --tags) $(TARGET)
+	$(MAKE) -C $@ CC=$(RVCC) CXX=$(RVCXX) OBJCOPY=$(RVCOPY) OBJDUMP=$(RVDUMP) EMULATOR_INC=$(EMULATOR_INC) CTSI_VERSION=$(shell git describe --dirty --tags) $(TARGET)
 
 $(SRCCLEAN) $(DEPCLEAN): %.clean:
 	$(MAKE) -C $* clean
