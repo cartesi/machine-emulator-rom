@@ -25,11 +25,6 @@ OBJDUMP=riscv64-cartesi-linux-gnu-objdump
 CFLAGS=-static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -DCTSI_VERSION='"$(CTSI_VERSION)"' -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
 CXXFLAGS=-static -fno-exceptions -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -DCTSI_VERSION='"$(CTSI_VERSION)"' -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
 
-ifeq ($(fd_emulation),yes)
-CFLAGS += -DRISCV_SUPPORT_FD_EMULATION
-CXXFLAGS += -DRISCV_SUPPORT_FD_EMULATION
-endif
-
 TARGET_EXEC ?= rom
 FINAL_EXEC ?= $(TARGET_EXEC).bin
 

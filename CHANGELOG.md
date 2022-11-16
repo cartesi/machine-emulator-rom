@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Added a rom/version entry to the FDT with GIT commit description
+- Changed PMA board address to the new range in microarchitecture
+- Updated toolchain version to v0.12.0 on CI
 
 ## [0.12.0] - 2022-08-29
 ### Changed

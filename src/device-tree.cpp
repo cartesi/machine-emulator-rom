@@ -105,10 +105,6 @@ static void parse_misa(char *str, uint64_t misa)
     for (int j = 0; j < sizeof(prefix) - 1; j++)
         *str++ = prefix[j];
 
-    #ifdef RISCV_SUPPORT_FD_EMULATION
-    misa |= MISA_BIT('F') | MISA_BIT('D');
-    #endif
-
     for(int i = 0; i < 26; i++) {
         if (misa & (1 << i))
             *str++ = 'a' + i;
