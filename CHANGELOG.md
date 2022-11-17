@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
+
+## [0.13.0] - 2022-11-17
+### Changed
 - Added a rom/version entry to the FDT with GIT commit description
 - Changed PMA board address to the new range in microarchitecture
 - Updated toolchain version to v0.12.0 on CI
@@ -46,7 +49,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [0.2.0]
 - [0.1.0]
 
-[Unreleased]: https://github.com/cartesi/machine-emulator-rom/compare/v0.12.0...HEAD
+[Unreleased]: https://github.com/cartesi/machine-emulator-rom/compare/v0.13.0...HEAD
+[0.13.0]: https://github.com/cartesi/machine-emulator-rom/releases/tag/v0.13.0
 [0.12.0]: https://github.com/cartesi/machine-emulator-rom/releases/tag/v0.12.0
 [0.11.0]: https://github.com/cartesi/machine-emulator-rom/releases/tag/v0.11.0
 [0.10.0]: https://github.com/cartesi/machine-emulator-rom/releases/tag/v0.10.0
