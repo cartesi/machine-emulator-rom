@@ -132,7 +132,7 @@ int build_device_tree(struct pma *pma, const char *bootargs,
      FDT_CHECK(fdt_begin_node(buf, "cpus"));
       FDT_CHECK(fdt_property_u32(buf, "#address-cells", 1));
       FDT_CHECK(fdt_property_u32(buf, "#size-cells", 0));
-      FDT_CHECK(fdt_property_u32(buf, "timebase-frequency", CLOCK_FREQ/RTC_FREQ_DIV_DEF));
+      FDT_CHECK(fdt_property_u32(buf, "timebase-frequency", RTC_CLOCK_FREQ_DEF/RTC_FREQ_DIV_DEF));
       FDT_CHECK(fdt_begin_node_num(buf, "cpu", 0));
        FDT_CHECK(fdt_property_string(buf, "device_type", "cpu"));
        FDT_CHECK(fdt_property_u32(buf, "reg", 0));
@@ -140,7 +140,7 @@ int build_device_tree(struct pma *pma, const char *bootargs,
        FDT_CHECK(fdt_property_string(buf, "compatible", "riscv"));
        FDT_CHECK(fdt_property_string(buf, "riscv,isa", isa_string));
        FDT_CHECK(fdt_property_string(buf, "mmu-type", "riscv,sv39"));
-       FDT_CHECK(fdt_property_u32(buf, "clock-frequency", CLOCK_FREQ));
+       FDT_CHECK(fdt_property_u32(buf, "clock-frequency", RTC_CLOCK_FREQ_DEF));
        FDT_CHECK(fdt_begin_node(buf, "interrupt-controller"));
         FDT_CHECK(fdt_property_u32(buf, "#interrupt-cells", 1));
         FDT_CHECK(fdt_property(buf, "interrupt-controller", NULL, 0));

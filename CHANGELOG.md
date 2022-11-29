@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
+- Changed RTC_FREQ_DIV from 100 to 8192
+- Changed RTC_CLOCK_FREQ from 100MHz to 128MHz
 
 ## [0.13.0] - 2022-11-17
 ### Changed
