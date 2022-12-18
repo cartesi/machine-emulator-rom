@@ -5,9 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.14.0] - 2022-12-19
 ### Changed
-- Changed RTC_FREQ_DIV from 100 to 8192
-- Changed RTC_CLOCK_FREQ from 100MHz to 128MHz
+- Changed RTC\_FREQ\_DIV from 100 to 8192
+- Changed RTC\_CLOCK\_FREQ from 100MHz to 128MHz
 
 ## [0.13.0] - 2022-11-17
 ### Changed
@@ -51,7 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [0.2.0]
 - [0.1.0]
 
-[Unreleased]: https://github.com/cartesi/machine-emulator-rom/compare/v0.13.0...HEAD
+[Unreleased]: https://github.com/cartesi/machine-emulator-rom/compare/v0.14.0...HEAD
+[0.14.0]: https://github.com/cartesi/machine-emulator-rom/releases/tag/v0.14.0
 [0.13.0]: https://github.com/cartesi/machine-emulator-rom/releases/tag/v0.13.0
 [0.12.0]: https://github.com/cartesi/machine-emulator-rom/releases/tag/v0.12.0
 [0.11.0]: https://github.com/cartesi/machine-emulator-rom/releases/tag/v0.11.0
