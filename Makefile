@@ -23,6 +23,7 @@ DOWNLOADDIR := $(DEPDIR)/downloads
 SRCCLEAN := $(addsuffix .clean,$(SRCDIR))
 DEPDIRS := $(addprefix $(DEPDIR)/,dtc-1.4.7)
 DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
+CTSI_VERSION ?= $(shell git describe --tags)
 
 TOOLCHAIN_DOCKER_REPOSITORY ?= cartesi/toolchain
 TOOLCHAIN_TAG ?= 0.12.0
@@ -68,7 +69,7 @@ downloads: $(EMULATOR_DEP)
 dep: $(BUILDDIR) $(DEPDIRS)
 
 $(SRCDIR):
-	$(MAKE) -C $@ CC=$(RVCC) CXX=$(RVCXX) OBJCOPY=$(RVCOPY) OBJDUMP=$(RVDUMP) EMULATOR_INC=$(EMULATOR_INC) CTSI_VERSION=$(shell git describe --tags) $(TARGET)
+	$(MAKE) -C $@ CC=$(RVCC) CXX=$(RVCXX) OBJCOPY=$(RVCOPY) OBJDUMP=$(RVDUMP) EMULATOR_INC=$(EMULATOR_INC) CTSI_VERSION=$(CTSI_VERSION) $(TARGET)
 
 $(SRCCLEAN) $(DEPCLEAN): %.clean:
 	$(MAKE) -C $* clean
@@ -79,6 +80,7 @@ toolchain-env:
 		-e GROUP=$$(id -g -n) \
 		-e UID=$$(id -u) \
 		-e GID=$$(id -g) \
+		-e CTSI_VERSION=$(CTSI_VERSION) \
 		-v `pwd`:/opt/cartesi/machine-emulator-rom \
 		-w /opt/cartesi/machine-emulator-rom \
 		$(TOOLCHAIN_DOCKER_REPOSITORY):$(TOOLCHAIN_TAG) $(CONTAINER_COMMAND)
@@ -89,6 +91,7 @@ toolchain-exec:
 		-e GROUP=$$(id -g -n) \
 		-e UID=$$(id -u) \
 		-e GID=$$(id -g) \
+		-e CTSI_VERSION=$(CTSI_VERSION) \
 		-v `pwd`:/opt/cartesi/machine-emulator-rom \
 		-w /opt/cartesi/machine-emulator-rom \
 		$(TOOLCHAIN_DOCKER_REPOSITORY):$(TOOLCHAIN_TAG) $(CONTAINER_COMMAND)
