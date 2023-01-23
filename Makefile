@@ -26,7 +26,7 @@ DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
 CTSI_VERSION ?= $(shell git describe --tags)
 
 TOOLCHAIN_DOCKER_REPOSITORY ?= cartesi/toolchain
-TOOLCHAIN_TAG ?= 0.12.0
+TOOLCHAIN_TAG ?= 0.13.0
 
 ifeq ($(EMULATOR_INC),)
 EMULATOR_DEP = lib/machine-emulator-defines/pma-defines.h

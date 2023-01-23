@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Updated toolchain version to v0.13.0 on CI
+
 ## [0.14.0] - 2022-12-19
 ### Changed
 - Changed RTC\_FREQ\_DIV from 100 to 8192
