@@ -23,7 +23,8 @@ DOWNLOADDIR := $(DEPDIR)/downloads
 SRCCLEAN := $(addsuffix .clean,$(SRCDIR))
 DEPDIRS := $(addprefix $(DEPDIR)/,dtc-1.4.7)
 DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
-CTSI_VERSION ?= $(shell git describe --tags)
+CTSI_VERSION  ?= $(shell git describe --long --dirty | awk -F- \
+	'{clean = $$2 == 0 && $$4 != "dirty"; printf("%s%s\n", $$1, !clean? "-dev":"")}')
 
 TOOLCHAIN_DOCKER_REPOSITORY ?= cartesi/toolchain
 TOOLCHAIN_TAG ?= 0.13.0
