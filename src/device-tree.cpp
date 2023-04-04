@@ -33,6 +33,15 @@ extern "C" {
 
 #define MISA_BIT(x) (1 << ((x) - 'A'))
 
+enum MIP_shifts {
+    MIP_SSIP_SHIFT = 1,
+    MIP_MSIP_SHIFT = 3,
+    MIP_STIP_SHIFT = 5,
+    MIP_MTIP_SHIFT = 7,
+    MIP_SEIP_SHIFT = 9,
+    MIP_MEIP_SHIFT = 11
+};
+
 struct pma {
     uint64_t istart;
     uint64_t ilength;
@@ -257,13 +266,30 @@ int build_device_tree(struct pma *pma, const char *bootargs,
        FDT_CHECK(fdt_property_string(buf, "compatible", "riscv,clint0"));
        uint32_t clint[] = {
            cpu_to_fdt32(intc_phandle),
-           cpu_to_fdt32(3), /* M IPI irq */
+           cpu_to_fdt32(MIP_MSIP_SHIFT),
            cpu_to_fdt32(intc_phandle),
-           cpu_to_fdt32(7) /* M timer irq */
+           cpu_to_fdt32(MIP_MTIP_SHIFT)
        };
        FDT_CHECK(fdt_property(buf, "interrupts-extended", clint, sizeof(clint)));
        FDT_CHECK(fdt_property_u64_u64(buf, "reg", PMA_CLINT_START_DEF, PMA_CLINT_LENGTH_DEF));
       FDT_CHECK(fdt_end_node(buf)); /* clint */
+
+      FDT_CHECK(fdt_begin_node_num(buf, "plic", PMA_PLIC_START_DEF));
+       FDT_CHECK(fdt_property_u32(buf, "#interrupt-cells", 1));
+       FDT_CHECK(fdt_property(buf, "interrupt-controller", NULL, 0));
+       FDT_CHECK(fdt_property_string(buf, "compatible", "riscv,plic0"));
+       FDT_CHECK(fdt_property_u32(buf, "riscv,ndev", PMA_PLIC_MAX_IRQ_DEF));
+       FDT_CHECK(fdt_property_u64_u64(buf, "reg", PMA_PLIC_START_DEF, PMA_PLIC_LENGTH_DEF));
+       uint32_t plic[] = {
+           cpu_to_fdt32(intc_phandle),
+           cpu_to_fdt32(MIP_SEIP_SHIFT),
+           cpu_to_fdt32(intc_phandle),
+           cpu_to_fdt32(MIP_MEIP_SHIFT)
+       };
+       FDT_CHECK(fdt_property(buf, "interrupts-extended", plic, sizeof(plic)));
+       int plic_phandle = cur_phandle++;
+       FDT_CHECK(fdt_property_u32(buf, "phandle", plic_phandle));
+      FDT_CHECK(fdt_end_node(buf)); /* plic */
 
       FDT_CHECK(fdt_begin_node_num(buf, "htif", PMA_HTIF_START_DEF));
        FDT_CHECK(fdt_property_string(buf, "compatible", "ucb,htif0"));
@@ -274,6 +300,24 @@ int build_device_tree(struct pma *pma, const char *bootargs,
        };
        FDT_CHECK(fdt_property(buf, "interrupts-extended", htif, sizeof(htif)));
       FDT_CHECK(fdt_end_node(buf));
+
+      for (int i = 0; i < PMA_MAX_DEF; i++) {
+          pma_entry = &pma[i];
+          pma_did = PMA_DID(pma_entry->istart);
+          if (pma_did == PMA_VIRTIO_DID_DEF) {
+              uint32_t virtio_idx = (PMA_VALUE(pma_entry->istart) - PMA_FIRST_VIRTIO_START_DEF) / PMA_VIRTIO_LENGTH_DEF;
+              uint32_t plic_irq_id = virtio_idx + 1;
+              FDT_CHECK(fdt_begin_node_num(buf, "virtio", PMA_VALUE(pma_entry->istart)));
+               FDT_CHECK(fdt_property_string(buf, "compatible", "virtio,mmio"));
+               FDT_CHECK(fdt_property_u64_u64(buf, "reg", PMA_VALUE(pma_entry->istart), PMA_VIRTIO_LENGTH_DEF));
+               uint32_t virtio[] = {
+                  cpu_to_fdt32(plic_phandle),
+                  cpu_to_fdt32(plic_irq_id)
+               };
+               FDT_CHECK(fdt_property(buf, "interrupts-extended", virtio, sizeof(virtio)));
+              FDT_CHECK(fdt_end_node(buf)); /* virtio */
+          }
+      }
 
      FDT_CHECK(fdt_end_node(buf)); /* soc */
 
