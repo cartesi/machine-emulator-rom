@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.0] - 2023-04-17
+### Changed
+- Updated machine-emulator-defines to v0.10.0
+- Updated toolchain version to v0.14.0
+
 ## [0.15.0] - 2023-02-10
 ### Changed
 - Static version strategy for artifact name
@@ -58,7 +63,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [0.2.0]
 - [0.1.0]
 
-[Unreleased]: https://github.com/cartesi/machine-emulator-rom/compare/v0.15.0...HEAD
+[Unreleased]: https://github.com/cartesi/machine-emulator-rom/compare/v0.16.0...HEAD
+[0.16.0]: https://github.com/cartesi/machine-emulator-rom/releases/tag/v0.16.0
 [0.15.0]: https://github.com/cartesi/machine-emulator-rom/releases/tag/v0.15.0
 [0.14.0]: https://github.com/cartesi/machine-emulator-rom/releases/tag/v0.14.0
 [0.13.0]: https://github.com/cartesi/machine-emulator-rom/releases/tag/v0.13.0
