@@ -23,7 +23,7 @@ DOWNLOADDIR := $(DEPDIR)/downloads
 SRCCLEAN := $(addsuffix .clean,$(SRCDIR))
 DEPDIRS := $(addprefix $(DEPDIR)/,dtc-1.4.7)
 DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
-CTSI_VERSION := v0.15.0
+CTSI_VERSION := v0.16.0
 
 TOOLCHAIN_DOCKER_REPOSITORY ?= cartesi/toolchain
 TOOLCHAIN_TAG ?= 0.14.0
