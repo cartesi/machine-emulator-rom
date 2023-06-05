@@ -9,7 +9,7 @@ If you would like to see a bug fixed or a new feature implemented,
 please open an issue for the discussion rather than directly opening
 a pull request.
 
-If you would like to contribute please read [CONTRIBUTING.md](/CONTRIBUTING.md).
+If you would like to contribute please read [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md).
 
 When you finally create a pull request, please follow these guidelines:
 
