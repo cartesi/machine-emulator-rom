@@ -1,5 +1,3 @@
-> :warning: The Cartesi team keeps working internally on the next version of this repository, following its regular development roadmap. Whenever there's a new version ready or important fix, these are published to the public source tree as new releases.
-
 # Cartesi Machine Emulator ROM
 
 The Cartesi Machine Emulator ROM is the reference software that boots a guest Operating System on the emulator.
@@ -16,11 +14,11 @@ The Cartesi Machine Emulator ROM is the reference software that boots a guest Op
 ### Build
 
 ```bash
-$ make downloads 
+$ make downloads
 $ make toolchain-env
 [toolchain-env]$ make dep
 [toolchain-env]$ make
-[toolchain-env]$ exit 
+[toolchain-env]$ exit
 ```
 
 Cleaning:
