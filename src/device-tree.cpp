@@ -170,8 +170,6 @@ int build_device_tree(struct pma *pma, const char *bootargs,
     uint64_t length = UINT64_MAX;
     uint64_t rx_buffer_start = 0, rx_buffer_length = 0;
     uint64_t tx_buffer_start = 0, tx_buffer_length = 0;
-    uint64_t hash_types_start = 0,  hash_types_length = 0;
-    uint64_t hash_values_start = 0, hash_values_length = 0;
     uint8_t pma_did;
     int ret, j = 0;
     char mtd_name[64] = "flash.";
@@ -210,33 +208,22 @@ int build_device_tree(struct pma *pma, const char *bootargs,
         } else if (pma_did == PMA_ROLLUP_TX_BUFFER_DID_DEF) {
             tx_buffer_start = PMA_VALUE(pma_entry->istart);
             tx_buffer_length = PMA_VALUE(pma_entry->ilength);
-        } else if (pma_did == PMA_ROLLUP_HASH_TYPES_DID_DEF) {
-            hash_types_start = PMA_VALUE(pma_entry->istart);
-            hash_types_length = PMA_VALUE(pma_entry->ilength);
-        } else if (pma_did == PMA_ROLLUP_HASH_VALUES_DID_DEF) {
-            hash_values_start = PMA_VALUE(pma_entry->istart);
-            hash_values_length = PMA_VALUE(pma_entry->ilength);
         }
     }
 
-    if (tx_buffer_length != 0 && rx_buffer_length != 0 && hash_types_length != 0 &&
-        hash_values_length != 0) {
+    if (tx_buffer_length != 0 && rx_buffer_length != 0) {
+        uint64_t reg[][2] = {
+            { cpu_to_fdt64(tx_buffer_start), cpu_to_fdt64(tx_buffer_length)},
+            { cpu_to_fdt64(rx_buffer_start), cpu_to_fdt64(rx_buffer_length)},
+        };
+        const char names[] = "tx\0rx";
+
         FDT_CHECK(fdt_begin_node(buf, "rollup"));
          FDT_CHECK(fdt_property_u32(buf, "#address-cells", 2));
          FDT_CHECK(fdt_property_u32(buf, "#size-cells", 2));
          FDT_CHECK(fdt_property_string(buf, "compatible", "ctsi-rollup"));
-         FDT_CHECK(fdt_begin_node_num(buf, "rx_buffer", rx_buffer_start));
-          FDT_CHECK(fdt_property_u64_u64(buf, "reg", rx_buffer_start, rx_buffer_length));
-         FDT_CHECK(fdt_end_node(buf)); /* rollup rx buffer */
-         FDT_CHECK(fdt_begin_node_num(buf, "tx_buffer", tx_buffer_start));
-          FDT_CHECK(fdt_property_u64_u64(buf, "reg", tx_buffer_start, tx_buffer_length));
-         FDT_CHECK(fdt_end_node(buf)); /* rollup tx buffer */
-         FDT_CHECK(fdt_begin_node_num(buf, "hash_types", hash_types_start));
-          FDT_CHECK(fdt_property_u64_u64(buf, "reg", hash_types_start, hash_types_length));
-         FDT_CHECK(fdt_end_node(buf)); /* rollup hash types */
-         FDT_CHECK(fdt_begin_node_num(buf, "hash_values", hash_values_start));
-          FDT_CHECK(fdt_property_u64_u64(buf, "reg", hash_values_start, hash_values_length));
-         FDT_CHECK(fdt_end_node(buf)); /* rollup hash values */
+          FDT_CHECK(fdt_property(buf, "reg", (char *)reg, sizeof(reg)));
+          FDT_CHECK(fdt_property(buf, "reg-names", (char *)names, sizeof(names)));
         FDT_CHECK(fdt_end_node(buf)); /* rollup */
     }
 
