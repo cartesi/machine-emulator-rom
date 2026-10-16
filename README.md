@@ -1,5 +1,11 @@
 # Cartesi Machine Emulator ROM
 
+> [!WARNING]
+> **This repository is no longer maintained.**
+> Starting with machine-emulator v0.16.0, the emulator builds the device tree itself and boots without a ROM image.
+> Existing releases here remain available for older projects.
+> Do not use this repository for new development.
+
 The Cartesi Machine Emulator ROM is the reference software that boots a guest Operating System on the emulator.
 
 ## Getting Started
